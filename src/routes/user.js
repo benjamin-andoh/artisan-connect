@@ -1,5 +1,7 @@
 const express = require('express');
 const User = require('../models/Users')
+// const bcrypt = require('bcrypt');
+
 
 const router = express.Router();
 
@@ -26,8 +28,8 @@ router.post('/register', async (req, res) => {
       return res.status(409).json({ error: 'Email already registered' });
     }
 
-    const passwordHash = await bcrypt.hash(password, 10);
-    const user = await User.create({ username, email, passwordHash, role });
+    // const passwordHash = await bcrypt.hash(password, 10);
+    const user = await User.create({ username, email, password, role });
 
     res.status(201).json({ message: 'User registered successfully', userId: user.id });
   } catch (error) {
