@@ -62,4 +62,20 @@ router.post('/login', async (req, res) => {
   }
 });
 
+
+const authMiddleware = require('../middleware/auth');
+
+// Protected Route Example
+router.get('/profile', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id, {
+      attributes: ['id', 'username', 'email']
+    });
+    res.json({ user });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 module.exports = router;
