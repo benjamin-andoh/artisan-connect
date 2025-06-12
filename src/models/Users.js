@@ -26,4 +26,10 @@ const User = sequelize.define('User', {
   timestamps: true,
 });
 
+
+const ArtisanProfile = require('./ArtisanProfile');
+User.hasOne(ArtisanProfile, { foreignKey: 'userId' });
+ArtisanProfile.belongsTo(User, { foreignKey: 'userId' });
+
+
 module.exports = User;
