@@ -5,8 +5,8 @@ const jobController = require('../controllers/jobController');
 
 router.post('/', authenticateToken, jobController.createJob);
 router.get('/', jobController.getAllJobs);
-// router.get('/:id', jobController.getJobById);
-// router.put('/:id',  jobController.updateJob);
-// router.delete('/:id', jobController.deleteJob);
+router.get('/:id',authenticateToken, jobController.getJobById);
+router.put('/:id', authenticateToken, jobController.updateJob);
+router.delete('/:id', authenticateToken, jobController.deleteJob);
 
 module.exports = router;

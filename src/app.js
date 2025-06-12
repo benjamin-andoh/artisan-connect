@@ -1,22 +1,21 @@
 const express = require('express');
 const app = express();
-
 const sequelize = require('./config/db');
+
 const userRouter = require('./routes/userRoutes');
 const artisanProfileRouter = require('./routes/artisanProfileRoutes');
-
-app.use(express.json());
+const serviceRequestRoutes = require('./routes/serviceRequestRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 
+app.use(express.json());
 
 
-app.get('/', (req, res) => {
-  res.send('Hello Artisan Connect!');
-});
 
 app.use('/api/users', userRouter);
 app.use('/api/artisan-profile', artisanProfileRouter);
-app.use('/api/jobs', jobRoutes);
+// app.use('/api/jobs', jobRoutes);
+app.use('/api/service-requests', serviceRequestRoutes);
+
 
 
 (async () => {
