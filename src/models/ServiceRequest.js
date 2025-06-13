@@ -2,19 +2,19 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const User = require('./Users');
+const ArtisanProfile = require('./ArtisanProfile');
 
 const ServiceRequest = sequelize.define('ServiceRequest', {
   id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.INTEGER,
     primaryKey: true,
   },
   customerId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
-  artisanId: {
-    type: DataTypes.UUID,
+  artisanProfileId: {
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   description: {
@@ -29,9 +29,13 @@ const ServiceRequest = sequelize.define('ServiceRequest', {
   timestamps: true,
 });
 
-User.hasMany(ServiceRequest, { foreignKey: 'customerId', as: 'serviceRequestsMade' });
-User.hasMany(ServiceRequest, { foreignKey: 'artisanId', as: 'serviceRequestsReceived' });
-ServiceRequest.belongsTo(User, { foreignKey: 'customerId', as: 'customer' });
-ServiceRequest.belongsTo(User, { foreignKey: 'artisanId', as: 'artisan' });
+// Customer association
+User.hasMany(ServiceRequest, { foreignKey: 'customerId' });
+ServiceRequest.belongsTo(User, { foreignKey: 'customerId' });
+
+// Artisan association
+ArtisanProfile.hasMany(ServiceRequest, { foreignKey: 'artisanProfileId' });
+ServiceRequest.belongsTo(ArtisanProfile, { foreignKey: 'artisanProfileId' });
+
 
 module.exports = ServiceRequest;

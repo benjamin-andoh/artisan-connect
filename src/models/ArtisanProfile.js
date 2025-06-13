@@ -2,8 +2,12 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
 const ArtisanProfile = sequelize.define('ArtisanProfile', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+  },
   userId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
     unique: true
   },

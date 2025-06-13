@@ -1,16 +1,19 @@
 const express = require('express');
 const app = express();
 const sequelize = require('./config/db');
-
+require('./models');
 const userRouter = require('./routes/userRoutes');
 const artisanProfileRouter = require('./routes/artisanProfileRoutes');
 const serviceRequestRoutes = require('./routes/serviceRequestRoutes');
-const jobRoutes = require('./routes/jobRoutes');
+// const jobRoutes = require('./routes/jobRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const artisanCategoryRoutes = require('./routes/artisanCategory');
 
 app.use(express.json());
 
 
-
+app.use('/api/artisan-categories', artisanCategoryRoutes);
+app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRouter);
 app.use('/api/artisan-profile', artisanProfileRouter);
 // app.use('/api/jobs', jobRoutes);

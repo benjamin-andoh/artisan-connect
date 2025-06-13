@@ -3,6 +3,10 @@ const sequelize = require('../config/db');
 const User = require('./Users');
 
 const Job = sequelize.define('Job', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+  },
   title: {
     type: DataTypes.STRING,
     allowNull: false
@@ -29,7 +33,7 @@ const Job = sequelize.define('Job', {
     defaultValue: 'open'
   },
   userId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false
   }
 }, {
