@@ -1,4 +1,3 @@
-// src/middleware/auth.js
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -18,6 +17,15 @@ const authenticateToken = (req, res, next) => {
   } catch (error) {
     return res.status(401).json({ error: 'Token is invalid or expired' });
   }
+};
+
+exports.authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    next();
+  };
 };
 
 module.exports = authenticateToken;

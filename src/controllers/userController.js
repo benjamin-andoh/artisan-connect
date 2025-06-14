@@ -1,27 +1,46 @@
+const { v4: uuidv4 } = require('uuid');
 const User = require('../models/User');
-
+const { sendEmail } = require('../utils/emailService');
+const { getVerificationEmail } = require('../utils/emailTemplates');
 
 exports.createUser = async (req, res) => {
   const { username, email, password, role } = req.body;
 
   if (!username || !email || !password || !role) {
-    return res.status(400).json({ error: 'Please provide all required fields' });
+    return res.status(400).json({ error: 'All fields are required' });
   }
-  console.log('create user reached')
+
   try {
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(409).json({ error: 'Email already registered' });
     }
 
-    const user = await User.create({ username, email, password, role });
+    const emailVerificationToken = uuidv4();
 
-    res.status(201).json({ message: 'User registered successfully', userId: user.id });
+    const user = await User.create({
+      username,
+      email,
+      password,
+      role,
+      emailVerificationToken,
+    });
+
+    const { subject, html } = getVerificationEmail(user.username, emailVerificationToken);
+
+    await sendEmail({ to: user.email, subject, html });
+
+    return res.status(201).json({
+      message: 'User registered. Please check your email to verify your account.',
+      userId: user.id,
+    });
+
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Server error' });
+    console.error('User creation error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 exports.getAllUsers = async (_req, res) => {
   try {
