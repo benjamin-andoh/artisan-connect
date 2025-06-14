@@ -1,12 +1,13 @@
 // models/ServiceRequest.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const User = require('./Users');
+const User = require('./User');
 const ArtisanProfile = require('./ArtisanProfile');
 
 const ServiceRequest = sequelize.define('ServiceRequest', {
   id: {
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true,
   },
   customerId: {

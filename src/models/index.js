@@ -1,6 +1,6 @@
 const sequelize = require('../config/db');
 
-const User = require('./Users');
+const User = require('./User');
 const ArtisanProfile = require('./ArtisanProfile');
 const Category = require('./Category');
 const ArtisanCategory = require('./ArtisanCategory');

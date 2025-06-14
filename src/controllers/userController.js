@@ -1,6 +1,5 @@
-const User = require('../models/Users');
-// const bcrypt = require('bcrypt');
-const generateToken = require('../utils/jwt');
+const User = require('../models/User');
+
 
 exports.createUser = async (req, res) => {
   const { username, email, password, role } = req.body;
@@ -15,7 +14,6 @@ exports.createUser = async (req, res) => {
       return res.status(409).json({ error: 'Email already registered' });
     }
 
-    // const passwordHash = await bcrypt.hash(password, 10);
     const user = await User.create({ username, email, password, role });
 
     res.status(201).json({ message: 'User registered successfully', userId: user.id });
@@ -56,24 +54,23 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-exports.loginUser = async(req, res) => {
 
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ where: { email } });
+// exports.login_User = async(req, res) => {
 
-    if (!user) return res.status(404).json({ error: 'User not found' });
+//   const { email, password } = req.body;
+//   try {
+//     const user = await User.findOne({ where: { email } });
 
-    // const isMatch = await bcrypt.compare(password, user.password);
-    const isMatch = password == user.password
-    if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
+//     if (!user) return res.status(404).json({ error: 'User not found' });
 
-    const token = generateToken(user);
+//     // const isMatch = await bcrypt.compare(password, user.password);
+//     const isMatch = password == user.password
+//     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
-    return res.json({ message: 'Login successful', token });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
+//     const token = generateToken(user);
 
-
+//     return res.json({ message: 'Login successful', token });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// }

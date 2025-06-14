@@ -1,10 +1,11 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const User = require('./Users');
+const User = require('./User');
 
 const Job = sequelize.define('Job', {
   id: {
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true,
   },
   title: {

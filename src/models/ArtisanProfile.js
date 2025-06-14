@@ -4,6 +4,7 @@ const sequelize = require('../config/db');
 const ArtisanProfile = sequelize.define('ArtisanProfile', {
   id: {
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true,
   },
   userId: {

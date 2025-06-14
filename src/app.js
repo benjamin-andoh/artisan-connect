@@ -5,18 +5,17 @@ require('./models');
 const userRouter = require('./routes/userRoutes');
 const artisanProfileRouter = require('./routes/artisanProfileRoutes');
 const serviceRequestRoutes = require('./routes/serviceRequestRoutes');
-// const jobRoutes = require('./routes/jobRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const artisanCategoryRoutes = require('./routes/artisanCategory');
+const authRoutes = require('./routes/authRoutes');
 
 app.use(express.json());
 
-
+app.use('/api/auth', authRoutes);
 app.use('/api/artisan-categories', artisanCategoryRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRouter);
 app.use('/api/artisan-profile', artisanProfileRouter);
-// app.use('/api/jobs', jobRoutes);
 app.use('/api/service-requests', serviceRequestRoutes);
 
 

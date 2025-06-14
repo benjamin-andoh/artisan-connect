@@ -1,6 +1,6 @@
 // controllers/serviceRequestController.js
 const ServiceRequest = require('../models/ServiceRequest');
-const User = require('../models/Users');
+const User = require('../models/User');
 
 exports.createServiceRequest = async (req, res) => {
   try {

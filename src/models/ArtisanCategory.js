@@ -4,6 +4,7 @@ const sequelize = require('../config/db');
 const ArtisanCategory = sequelize.define('ArtisanCategory', {
   id: {
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true,
   },
   artisanProfileId: {
