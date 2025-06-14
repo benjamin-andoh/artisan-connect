@@ -24,7 +24,6 @@ exports.verifyEmail = async (req, res) => {
     user.emailVerified = true;
     user.emailVerificationToken = null;
     await user.save();
-    console.log("Email verified successfully. You can now log in.")
     return res.status(200).json({ message: 'Email verified successfully. You can now log in.' });
   } catch (err) {
     console.error('Verification error:', err);
