@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const sequelize = require('./config/db');
 require('./models');
@@ -8,6 +9,12 @@ const serviceRequestRoutes = require('./routes/serviceRequestRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const artisanCategoryRoutes = require('./routes/artisanCategory');
 const authRoutes = require('./routes/authRoutes');
+
+// Allow requests from frontend (Vite runs on port 5173)
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true, // if you're sending cookies or auth headers
+}));
 
 app.use(express.json());
 
