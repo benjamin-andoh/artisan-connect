@@ -16,17 +16,14 @@ exports.createUser = async (req, res) => {
       return res.status(409).json({ error: 'Email already registered' });
     }
 
-    const emailVerificationToken = uuidv4();
-
     const user = await User.create({
       username,
       email,
       password,
-      role,
-      emailVerificationToken,
+      role
     });
 
-    const { subject, html } = getVerificationEmail(user.username, emailVerificationToken);
+    const { subject, html } = getVerificationEmail(user.username, user.emailVerificationToken);
 
     await sendEmail({ to: user.email, subject, html });
 

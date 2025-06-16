@@ -9,14 +9,13 @@ exports.verifyEmail = async (req, res) => {
   if (!token) {
     return res.status(400).json({ error: 'Verification token is required' });
   }
-
   try {
     const user = await User.findOne({ where: { emailVerificationToken: token } });
 
     if (!user) {
       return res.status(404).json({ error: 'Invalid or expired verification token' });
     }
-
+    
     if (user.emailVerified) {
       return res.status(200).json({ message: 'Email already verified' });
     }
@@ -30,6 +29,9 @@ exports.verifyEmail = async (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
+
 
 
 exports.loginUser = async (req, res) => {

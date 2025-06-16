@@ -30,6 +30,7 @@ const User = sequelize.define('User', {
   emailVerificationToken: {
   type: DataTypes.STRING,
   allowNull: true,
+  defaultValue: uuidv4,
   },
 }, {
   tableName: 'users',
@@ -42,7 +43,6 @@ const User = sequelize.define('User', {
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
       }
-       user.emailVerificationToken = uuidv4(); 
     },
     
     // Hash password if updated
