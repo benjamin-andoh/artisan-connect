@@ -25,8 +25,6 @@ app.use('/api/users', userRouter);
 app.use('/api/artisan-profile', artisanProfileRouter);
 app.use('/api/service-requests', serviceRequestRoutes);
 
-
-
 (async () => {
   try {
     await sequelize.authenticate();

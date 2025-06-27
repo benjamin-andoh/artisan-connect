@@ -1,4 +1,3 @@
-const { v4: uuidv4 } = require('uuid');
 const User = require('../models/User');
 const { sendEmail } = require('../utils/emailService');
 const { getVerificationEmail } = require('../utils/emailTemplates');

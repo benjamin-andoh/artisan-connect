@@ -1,8 +1,22 @@
 const ArtisanProfile = require('../models/ArtisanProfile');
+const { Category } = require('../models');
+
 
 exports.createProfile = async (data, userId) => {
-  return await ArtisanProfile.create({ ...data, userId });
+  const { categoryIds, ...profileData } = data;
+
+  const profile = await ArtisanProfile.create({ ...profileData, userId });
+
+  const categoryArray = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
+
+  if (categoryArray.length > 0) {
+    await profile.addCategories(categoryArray);
+  }
+
+  return profile;
 };
+
+
 
 exports.getAllProfiles = async () => {
   return await ArtisanProfile.findAll();
@@ -22,4 +36,28 @@ exports.deleteProfile = async (id) => {
   const profile = await ArtisanProfile.findByPk(id);
   if (!profile) throw new Error('Profile not found');
   await profile.destroy();
+};
+
+
+exports.getArtisansByCategoryName = async (categoryName) => {
+  if (!categoryName) throw new Error('Category name is required');
+
+  const category = await Category.findOne({ where: { name: categoryName } });
+  console.log("service category ***", category.id)
+
+  if (!category) throw new Error('Category not found');
+
+  const artisans = await category.getArtisanProfiles();
+
+  console.log("service artisan---", artisans)
+  return artisans.map((artisan) => ({
+    id: artisan.id,
+    bio: artisan.bio,
+    skills: artisan.skills,
+    location: artisan.location,
+    user: artisan.User ? {
+      username: artisan.User.username,
+      email: artisan.User.email
+    } : null,
+  }));
 };

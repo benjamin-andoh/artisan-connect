@@ -1,4 +1,5 @@
 const artisanProfileService = require('../services/artisanProfileService');
+const { ArtisanProfile, Category, User } = require('../models');
 
 exports.createProfile = async (req, res) => {
   try {
@@ -45,3 +46,18 @@ exports.deleteProfile = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+
+exports.getArtisansByCategory = async (req, res) => {
+  const categoryName = req.params.name;
+  console.log("Category name param:", categoryName); 
+  try {
+    const categoryName = req.params.name;
+    const artisans = await artisanProfileService.getArtisansByCategoryName(categoryName);
+    res.status(200).json(artisans);
+  } catch (error) {
+    console.error('Error fetching artisans by category:', error.message);
+    res.status(400).json({ message: error.message });
+  }
+};
+
