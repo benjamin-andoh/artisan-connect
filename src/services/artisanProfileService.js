@@ -5,16 +5,33 @@ const { Category } = require('../models');
 exports.createProfile = async (data, userId) => {
   const { categoryIds, ...profileData } = data;
 
-  const profile = await ArtisanProfile.create({ ...profileData, userId });
+  console.log("this is service layer");
+  console.log("Profile data:", profileData);
+  console.log("User ID:", userId);
+  console.log("Category IDs:", categoryIds);
 
-  const categoryArray = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
+  let profile;
+  try {
+    profile = await ArtisanProfile.create({ ...profileData, userId });
+  } catch (err) {
+    console.error("❌ Error creating ArtisanProfile:", err);
+    throw new Error(err.message);
+  }
 
-  if (categoryArray.length > 0) {
-    await profile.addCategories(categoryArray);
+  try {
+    const categoryArray = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
+
+    if (categoryArray.length > 0) {
+      await profile.addCategories(categoryArray);
+    }
+  } catch (err) {
+    console.error("❌ Error linking categories:", err);
+    throw new Error(err.message);
   }
 
   return profile;
 };
+
 
 
 

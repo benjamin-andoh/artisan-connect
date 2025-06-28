@@ -3,8 +3,8 @@ const { createCategory, getAllCategories } = require('../controllers/categoryCon
 const artisanProfileController = require('../controllers/artisanProfileController');
 const router = express.Router();
 
-router.post('/', createCategory);         // Admin creates category
-router.get('/', getAllCategories);      // Get all categories
+router.post('/', createCategory);         
+router.get('/', getAllCategories);     
 router.get('/:name/artisans', artisanProfileController.getArtisansByCategory);
 
 module.exports = router;

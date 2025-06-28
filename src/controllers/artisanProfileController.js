@@ -3,6 +3,11 @@ const { ArtisanProfile, Category, User } = require('../models');
 
 exports.createProfile = async (req, res) => {
   try {
+    const existing = await ArtisanProfile.findOne({ where: { userId: req.user.id } });
+
+    if (existing) {
+      return res.status(409).json({ message: 'Profile already exists for this user' });
+    }
     const profile = await artisanProfileService.createProfile(req.body, req.user.id);
     res.status(201).json(profile);
   } catch (error) {
