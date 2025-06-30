@@ -10,5 +10,7 @@ router.get('/:id', artisanProfileController.getProfileById);
 router.put('/:id', authMiddleware, artisanProfileController.updateProfile);
 router.delete('/:id', authMiddleware, artisanProfileController.deleteProfile);
 router.get('/by-category/:name', authMiddleware, artisanProfileController.getArtisansByCategory);
+router.get('/search', artisanProfileController.searchArtisans);
+
 
 module.exports = router;

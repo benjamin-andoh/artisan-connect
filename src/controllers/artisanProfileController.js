@@ -66,3 +66,30 @@ exports.getArtisansByCategory = async (req, res) => {
   }
 };
 
+exports.searchArtisans = async (req, res) => {
+  try {
+    const { query } = req.query;
+    if (!query) return res.status(400).json({ message: "Query is required" });
+
+    const results = await ArtisanProfile.findAll({
+      include: [
+        {
+          model: User,
+          where: {
+            username: { [Op.iLike]: `%${query}%` }
+          },
+          attributes: ['username', 'email']
+        },
+      ],
+      where: {
+        skills: {
+          [Op.contains]: [query.toLowerCase()]
+        }
+      }
+    });
+
+    res.status(200).json(results);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
