@@ -4,12 +4,6 @@ const { Category } = require('../models');
 
 exports.createProfile = async (data, userId) => {
   const { categoryIds, ...profileData } = data;
-
-  console.log("this is service layer");
-  console.log("Profile data:", profileData);
-  console.log("User ID:", userId);
-  console.log("Category IDs:", categoryIds);
-
   let profile;
   try {
     profile = await ArtisanProfile.create({ ...profileData, userId });
