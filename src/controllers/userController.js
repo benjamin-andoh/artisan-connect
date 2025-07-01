@@ -21,14 +21,13 @@ exports.createUser = async (req, res) => {
     if (existingUser) {
       return res.status(409).json({ error: 'Email already registered' });
     }
-    console.log("new user will be created")
     const user = await User.create({
       username,
       email,
       password,
       userType
     });
-    console.log("user has nbeen created successfully")
+    console.log("user has been created successfully")
     const { subject, html } = getVerificationEmail(user.username, user.emailVerificationToken);
 
     await sendEmail({ to: user.email, subject, html });

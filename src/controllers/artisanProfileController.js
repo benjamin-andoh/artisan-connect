@@ -27,7 +27,9 @@ exports.getAllProfiles = async (req, res) => {
 exports.getProfileById = async (req, res) => {
   try {
     const profile = await artisanProfileService.getProfileById(req.params.id);
-    if (!profile) return res.status(404).json({ error: 'Profile not found' });
+    if (!profile) {
+      return res.status(404).json({ error: 'Profile not found' });
+    }
     res.status(200).json(profile);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -39,6 +41,7 @@ exports.updateProfile = async (req, res) => {
     const updated = await artisanProfileService.updateProfile(req.params.id, req.body);
     res.status(200).json(updated);
   } catch (error) {
+    console.error('❌ Failed to update artisan profile:', error.message);
     res.status(400).json({ error: error.message });
   }
 };

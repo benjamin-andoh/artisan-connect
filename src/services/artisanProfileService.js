@@ -26,9 +26,6 @@ exports.createProfile = async (data, userId) => {
   return profile;
 };
 
-
-
-
 exports.getAllProfiles = async () => {
   return await ArtisanProfile.findAll();
 };
@@ -39,8 +36,23 @@ exports.getProfileById = async (id) => {
 
 exports.updateProfile = async (id, data) => {
   const profile = await ArtisanProfile.findByPk(id);
-  if (!profile) throw new Error('Profile not found');
-  return await profile.update(data);
+
+  if (!profile) {
+    throw new Error('Profile not found');
+  }
+
+  const { categoryIds, ...profileFields } = data;
+
+  // Update main profile fields
+  await profile.update(profileFields);
+
+  // Update category associations
+  if (categoryIds) {
+    const categoryArray = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
+    await profile.setCategories(categoryArray); // replaces old links
+  }
+
+  return profile;
 };
 
 exports.deleteProfile = async (id) => {

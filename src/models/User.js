@@ -56,7 +56,7 @@ const User = sequelize.define('User', {
       }
     },
 
-        afterCreate: async (user, options) => {
+    afterCreate: async (user, options) => {
       const { ArtisanProfile } = require('./ArtisanProfile');
       const { CustomerProfile } = require('./CustomerProfile');
 
