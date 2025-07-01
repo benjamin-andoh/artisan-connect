@@ -35,7 +35,8 @@ exports.getProfileById = async (id) => {
 };
 
 exports.updateProfile = async (id, data) => {
-  const profile = await ArtisanProfile.findByPk(id);
+  console.log("Updating the user profile data: ", data)
+  const profile = await ArtisanProfile.findOne({ where: { userId: id } });
 
   if (!profile) {
     throw new Error('Profile not found');
@@ -45,11 +46,12 @@ exports.updateProfile = async (id, data) => {
 
   // Update main profile fields
   await profile.update(profileFields);
-
+  console.log("this is the profile: ", profile)
   // Update category associations
   if (categoryIds) {
+    console.log("creating category for the profile ")
     const categoryArray = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
-    await profile.setCategories(categoryArray); // replaces old links
+    await profile.setCategories(categoryArray);
   }
 
   return profile;
@@ -57,18 +59,24 @@ exports.updateProfile = async (id, data) => {
 
 exports.deleteProfile = async (id) => {
   const profile = await ArtisanProfile.findByPk(id);
-  if (!profile) throw new Error('Profile not found');
+  if (!profile) {
+    throw new Error('Profile not found');
+  }
   await profile.destroy();
 };
 
 
 exports.getArtisansByCategoryName = async (categoryName) => {
-  if (!categoryName) throw new Error('Category name is required');
+  if (!categoryName) {
+    throw new Error('Category name is required');
+  }
 
   const category = await Category.findOne({ where: { name: categoryName } });
   console.log("service category ***", category.id)
 
-  if (!category) throw new Error('Category not found');
+  if (!category) {
+    throw new Error('Category not found');
+  }
 
   const artisans = await category.getArtisanProfiles();
 

@@ -29,11 +29,10 @@ const CustomerProfile = sequelize.define('CustomerProfile', {
     allowNull: true,
   },
   avatar: {
-    type: DataTypes.STRING, // Store image URL or path
+    type: DataTypes.STRING,
     allowNull: true,
   }
 }, {
-  tableName: 'customer_profiles',
   timestamps: true,
 });
 

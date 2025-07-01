@@ -57,22 +57,26 @@ const User = sequelize.define('User', {
     },
 
     afterCreate: async (user, options) => {
-      const { ArtisanProfile } = require('./ArtisanProfile');
-      const { CustomerProfile } = require('./CustomerProfile');
-
-      if (user.userType === 'artisan') {
-        await ArtisanProfile.create({
-          userId: user.id,
-          bio: 'Your artisan bio goes here...',
-          skills: [],
-          location: '',
-        });
-      } else if (user.userType === 'customer') {
-        await CustomerProfile.create({
-          userId: user.id,
-          address: '',
-          phone: '',
-        });
+      const { ArtisanProfile, CustomerProfile } = require('../models');
+      try {
+        if (user.userType === 'artisan') {
+          console.log(`Creating artisan profile for user: ${user.id}`);
+          return await ArtisanProfile.create({
+            userId: user.id,
+            bio: 'Your artisan bio goes here...',
+            skills: [],
+            location: '',
+          });
+        } else if (user.userType === 'customer') {
+          console.log(`Creating customer profile for user: ${user.id}`);
+          return await CustomerProfile.create({
+            userId: user.id,
+            address: '',
+            phone: '',
+          });
+        }
+      } catch (error) {
+        console.error('❌ Error in afterCreate hook:', error.message);
       }
     }
   },
