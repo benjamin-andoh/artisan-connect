@@ -70,22 +70,13 @@ exports.updateUser = async (req, res) => {
 };
 
 
-// exports.login_User = async(req, res) => {
-
-//   const { email, password } = req.body;
-//   try {
-//     const user = await User.findOne({ where: { email } });
-
-//     if (!user) return res.status(404).json({ error: 'User not found' });
-
-//     // const isMatch = await bcrypt.compare(password, user.password);
-//     const isMatch = password == user.password
-//     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
-
-//     const token = generateToken(user);
-
-//     return res.json({ message: 'Login successful', token });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// }
+exports.getMyProfile = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id, {
+      attributes: ['id', 'username', 'email'],
+    });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

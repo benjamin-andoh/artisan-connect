@@ -55,7 +55,7 @@ exports.deleteProfile = async (req, res) => {
 
 exports.getArtisansByCategory = async (req, res) => {
   const categoryName = req.params.name;
-  console.log("Category name param:", categoryName); 
+  console.log("Category name param:", categoryName);
   try {
     const categoryName = req.params.name;
     const artisans = await artisanProfileService.getArtisansByCategoryName(categoryName);
@@ -91,5 +91,31 @@ exports.searchArtisans = async (req, res) => {
     res.status(200).json(results);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getMyProfile = async (req, res) => {
+  console.log("you are in artisan profile");
+  try {
+    const userId = req.user.id;
+
+    console.log("this is the userID: ",userId)
+
+    const profile = await ArtisanProfile.findOne({
+      where: { userId },
+      include: [
+        { model: User, attributes: ['username', 'email'] },
+        { model: Category, through: { attributes: [] } }
+      ]
+    });
+
+    if (!profile) {
+      return res.status(404).json({ message: 'Profile not found' });
+    }
+
+    res.json(profile);
+  } catch (error) {
+    console.error('[getMyProfile] error:', error);
+    res.status(500).json({ error: error.message });
   }
 };
