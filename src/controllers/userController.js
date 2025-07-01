@@ -3,25 +3,32 @@ const { sendEmail } = require('../utils/emailService');
 const { getVerificationEmail } = require('../utils/emailTemplates');
 
 exports.createUser = async (req, res) => {
-  const { username, email, password, role } = req.body;
+  console.log("we are currently here req.body", req.body)
+  const { username, email, password, userType = 'customer' } = req.body;
 
-  if (!username || !email || !password || !role) {
+  if (!username || !email || !password || !userType) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
+  const validUserTypes = ['artisan', 'customer'];
+  if (!validUserTypes.includes(userType)) {
+    return res.status(400).json({ error: 'Invalid user type' });
+  }
+
   try {
+    
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(409).json({ error: 'Email already registered' });
     }
-
+    console.log("new user will be created")
     const user = await User.create({
       username,
       email,
       password,
-      role
+      userType
     });
-
+    console.log("user has nbeen created successfully")
     const { subject, html } = getVerificationEmail(user.username, user.emailVerificationToken);
 
     await sendEmail({ to: user.email, subject, html });
@@ -50,7 +57,9 @@ exports.getAllUsers = async (_req, res) => {
 exports.getUserById = async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
     res.json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });

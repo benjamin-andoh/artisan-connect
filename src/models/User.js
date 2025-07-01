@@ -14,6 +14,11 @@ const User = sequelize.define('User', {
     allowNull: false,
     unique: true,
   },
+  userType: {
+    type: DataTypes.ENUM('customer', 'artisan'),
+    defaultValue: 'customer',
+    allowNull: false
+  }, 
   email: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -37,7 +42,6 @@ const User = sequelize.define('User', {
   timestamps: true,
 
   hooks: {
-    // Hash password before creating user
     beforeCreate: async (user) => {
       if (user.password) {
         const salt = await bcrypt.genSalt(10);
@@ -45,19 +49,33 @@ const User = sequelize.define('User', {
       }
     },
     
-    // Hash password if updated
     beforeUpdate: async (user) => {
       if (user.changed('password')) {
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
       }
     },
+
+        afterCreate: async (user, options) => {
+      const { ArtisanProfile } = require('./ArtisanProfile');
+      const { CustomerProfile } = require('./CustomerProfile');
+
+      if (user.userType === 'artisan') {
+        await ArtisanProfile.create({
+          userId: user.id,
+          bio: 'Your artisan bio goes here...',
+          skills: [],
+          location: '',
+        });
+      } else if (user.userType === 'customer') {
+        await CustomerProfile.create({
+          userId: user.id,
+          address: '',
+          phone: '',
+        });
+      }
+    }
   },
 });
-
-const ArtisanProfile = require('./ArtisanProfile');
-User.hasOne(ArtisanProfile, { foreignKey: 'userId' });
-ArtisanProfile.belongsTo(User, { foreignKey: 'userId' });
-
 
 module.exports = User;
