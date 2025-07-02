@@ -71,6 +71,7 @@ const User = sequelize.define('User', {
           console.log(`Creating customer profile for user: ${user.id}`);
           return await CustomerProfile.create({
             userId: user.id,
+            
             address: '',
             phone: '',
           });

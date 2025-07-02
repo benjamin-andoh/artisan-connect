@@ -78,7 +78,14 @@ exports.getArtisansByCategoryName = async (categoryName) => {
     throw new Error('Category not found');
   }
 
-  const artisans = await category.getArtisanProfiles();
+   const artisans = await category.getArtisanProfiles({
+    include: [
+      {
+        model: require('../models').User,
+        attributes: ['username', 'email'],
+      }
+    ]
+  });
 
   console.log("service artisan---", artisans)
   return artisans.map((artisan) => ({

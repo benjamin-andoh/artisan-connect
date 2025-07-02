@@ -1,3 +1,4 @@
+/* These lines of code are setting up a router using the Express framework in a Node.js application. */
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/auth');

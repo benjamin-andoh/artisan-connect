@@ -14,7 +14,7 @@ const CustomerProfile = sequelize.define('CustomerProfile', {
   },
   fullName: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   phoneNumber: {
     type: DataTypes.STRING,

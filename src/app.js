@@ -9,6 +9,7 @@ const serviceRequestRoutes = require('./routes/serviceRequestRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const artisanCategoryRoutes = require('./routes/artisanCategory');
 const authRoutes = require('./routes/authRoutes');
+const customerProfileRoute = require('./routes/customerProfileRoute')
 
 // Allow requests from frontend (Vite runs on port 5173)
 app.use(cors({
@@ -23,6 +24,7 @@ app.use('/api/artisan-categories', artisanCategoryRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRouter);
 app.use('/api/artisan-profile', artisanProfileRouter);
+app.use('/api/customer-profile', customerProfileRoute);
 app.use('/api/service-requests', serviceRequestRoutes);
 
 (async () => {
