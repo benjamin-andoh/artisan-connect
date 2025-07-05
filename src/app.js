@@ -5,11 +5,12 @@ const sequelize = require('./config/db');
 require('./models');
 const userRouter = require('./routes/userRoutes');
 const artisanProfileRouter = require('./routes/artisanProfileRoutes');
-const serviceRequestRoutes = require('./routes/serviceRequestRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const artisanCategoryRoutes = require('./routes/artisanCategory');
 const authRoutes = require('./routes/authRoutes');
 const customerProfileRoute = require('./routes/customerProfileRoute')
+const jobRequestRoutes = require('./routes/jobRequestRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 // Allow requests from frontend (Vite runs on port 5173)
 app.use(cors({
@@ -25,7 +26,8 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRouter);
 app.use('/api/artisan-profile', artisanProfileRouter);
 app.use('/api/customer-profile', customerProfileRoute);
-app.use('/api/service-requests', serviceRequestRoutes);
+app.use('/api/job-requests', jobRequestRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 (async () => {
   try {

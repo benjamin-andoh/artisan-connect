@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const ArtisanProfile = require('./ArtisanProfile');
 
 const Review = sequelize.define('Review', {
   id: {
@@ -8,28 +7,33 @@ const Review = sequelize.define('Review', {
     autoIncrement: true,
     primaryKey: true,
   },
-  artisanProfileId: {
+  jobRequestId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  customerName: {
-    type: DataTypes.STRING,
-    allowNull: false
+  artisanId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  customerId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
   rating: {
-    type: DataTypes.FLOAT,
-    allowNull: false
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      min: 1,
+      max: 5,
+    }
   },
   comment: {
     type: DataTypes.TEXT,
-    allowNull: true
-  }
+    allowNull: true,
+  },
 }, {
-  tableName: 'reviews',
   timestamps: true,
+  tableName: 'reviews',
 });
-
-// ArtisanProfile.hasMany(Review, { foreignKey: 'artisanProfileId' });
-// Review.belongsTo(ArtisanProfile, { foreignKey: 'artisanProfileId' });
 
 module.exports = Review;
